@@ -1,0 +1,16 @@
+#!/bin/bash
+
+terraform init
+
+runtest() {
+  name="$1"
+  result="$2"
+  echo "====== Testing with name '$name' ======"
+  echo "Expecting result:  $result"
+  TF_VAR_name="$1" terraform plan
+}
+
+runtest "foo"      "accepted"
+runtest "abc123"   "accepted"
+runtest "Abc123"   "error - capital letters not allowed"
+runtest "abc:123"  "error - punctuation not allowed"
